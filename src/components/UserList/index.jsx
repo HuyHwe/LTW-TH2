@@ -7,15 +7,27 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-
+import { useEffect, useState } from "react";
 import "./styles.css";
 import models from "../../modelData/models";
+import fetchModel from "../../lib/fetchModelData";
 
 /**
  * Define UserList, a React component of Project 4.
  */
 function UserList () {
-    const users = models.userListModel();
+    const [users, setUsers] = useState([]); 
+    useEffect(() => {
+      fetchModel("http://localhost:8081/api/user/list")
+      .then((data) => {
+        console.log("User list data:", data);
+        setUsers(data);
+      })
+      .catch((error) => {
+        setUsers([]);
+        console.error("Error fetching user list:", error);
+      });
+    }, []);
     return (
       <div>
         <Typography variant="body1">
@@ -28,7 +40,7 @@ function UserList () {
           {users.map((item) => (
             <>
               <ListItem>
-                      <Link to={`users/${item._id}`}> <ListItemText primary={item.first_name}/></Link>
+                      <Link to={`users/${item._id}`}> <ListItemText primary={item.last_name}/></Link>
               </ListItem>
               <Divider />
             </>

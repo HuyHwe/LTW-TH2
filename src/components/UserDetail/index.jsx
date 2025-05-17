@@ -6,13 +6,21 @@ import {useParams} from "react-router-dom";
 import models from "../../modelData/models";
 import UserPhotos from "../UserPhotos";
 import {Link} from "react-router-dom";
+import { useEffect, useState } from "react";
 /**
  * Define UserDetail, a React component of Project 4.
  */
 function UserDetail() {
     const user = useParams();
     const userId = user.userId;
-    const userObj = models.userModel(userId)
+    const [userObj, setUserObj] = useState(null);
+
+    useEffect(() => {
+      fetch(`http://localhost:8081/api/user/${userId}`)
+        .then((res) => res.json())
+        .then((data) => setUserObj(data))
+        .catch((err) => console.error(err));
+    }, [userId]);
     return (
         
           <Typography variant="body1">
