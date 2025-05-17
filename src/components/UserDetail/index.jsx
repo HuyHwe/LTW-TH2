@@ -19,7 +19,7 @@ function UserDetail() {
       fetch(`http://localhost:8081/api/user/${userId}`)
         .then((res) => res.json())
         .then((data) => setUserObj(data))
-        .catch((err) => console.error(err));
+        .catch((err) => console.error(err)); //fix
     }, [userId]);
     return (
         
